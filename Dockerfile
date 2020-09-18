@@ -11,11 +11,11 @@ RUN mkdir -p /usr/local/apache2/cgi-bin  && \
   wget -c https://versaweb.dl.sourceforge.net/project/lightsquid/lightsquid/1.8/lightsquid-1.8.tgz && \
   tar -xzf lightsquid-1.8.tgz && \
   mv lightsquid-1.8 lightsquid && \
-  sed -i 's+/var/www/html+/usr/local/apache2/cgi-bin+g' /usr/local/apache2/cgi-bin/lightsquid/lightsquid.cfg && \
   cd lightsquid && \
   chmod +x *.cgi && \
-  chmod +x *.pl 
-RUN   /usr/local/apache2/cgi-bin/lightsquid/check-setup.pl && \
+  chmod +x *.pl && \
+  sed -i 's+/var/www/html+/usr/local/apache2/cgi-bin+g' /usr/local/apache2/cgi-bin/lightsquid/lightsquid.cfg && \
+  /usr/local/apache2/cgi-bin/lightsquid/check-setup.pl && \
   /usr/local/apache2/cgi-bin/lightsquid/lightparser.pl && \
   rm /var/log/squid/access.log /usr/local/apache2/cgi-bin/lightsquid-1.8.tgz && \
   (crontab -l && echo "*/20 * * * * /usr/local/apache2/cgi-bin/lightsquid/lightparser.pl today") | crontab -
